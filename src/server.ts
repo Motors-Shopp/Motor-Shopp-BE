@@ -1,23 +1,20 @@
-import 'reflect-metadata'
-import express from 'express';
-import cors from 'cors';
-import 'express-async-errors';
-import {AppRoutes} from '@routes/index.routes';
-//import AppError from '@errors/AppError';
-import { errors } from 'celebrate';
+import app from './app'
+import AppDataSource from './data-source'
 
-const PORT = 3000
+import "dotenv/config"
 
-const app = express();
+const startServer = async () => {
+  const PORT = process.env.PORT || 3000
 
-app.use(cors());
-app.use(express.json())
+  await AppDataSource.initialize()
+    .then(() => {
+      console.log('Data Source initialized')
+    })
+    .catch((err) => {
+      console.error('Error during Data Source initialization', err)
+    });
 
-app.use(AppRoutes)
-app.use(errors())
-//middleware para tratar erros
-/* app.use(AppError) */
+  app.listen(PORT, () => console.log(`App is running on port ${PORT}!`))
+}
 
-app.listen(PORT, () =>{
-  console.log(`Server running at port ${PORT}`)
-})
+startServer()
