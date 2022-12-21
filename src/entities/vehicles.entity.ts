@@ -19,7 +19,16 @@ class Vehicle {
     year: number
 
     @Column()
-    plate: string
+    description: string
+
+    @Column()
+    type: string
+
+    @Column()
+    img: string
+
+    @Column()
+    galery: string
 
     @Column()
     kilometers: number
