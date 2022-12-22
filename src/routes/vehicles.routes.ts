@@ -1,10 +1,11 @@
+import { getVehicleController, getCarByIDController, createVehicleController } from '@controllers/vehicle.controllers';
 import { Router } from 'express';
 
 export const vehiclesRouter = Router();
 
-vehiclesRouter.post("", );
-/* vehiclesRouter.get("",) 
-vehiclesRouter.get("/:id", )
-vehiclesRouter.delete("/:id", );
+vehiclesRouter.get("", getVehicleController) 
+vehiclesRouter.get("/:id", getCarByIDController)
+vehiclesRouter.post("", createVehicleController);
+/*vehiclesRouter.delete("/:id", );
 vehiclesRouter.patch("/:id", );
  */
