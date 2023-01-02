@@ -1,17 +1,20 @@
 import {Request, Response} from 'express';
 import { instanceToPlain } from "class-transformer";
 import { createVehicleService, getVehiclesService } from '@services/vehicle.services';
+
 // import { createVehicleService, getVehicleByIdService, getVehiclesService } from '@services/vehicle.services';
 
 import { ICreateVehicle } from '@interfaces/vehicles.interface';
 import { Any } from 'typeorm';
 
 export const createVehicleController = async (req: Request, res: Response): Promise<Response> =>{
-    const { title, year, kilometers, price, description, typeOfVehicle, img, fristImg }: any = req.body;
+    const data = req.body;
+    const { userID } = req.user;
 
-    const newVehicle = await createVehicleService({ title, year, kilometers, price, description, typeOfVehicle, img, fristImg });
+    const newVehicle = await createVehicleService({ userID, data});
     
-    return res.status(201).json(newVehicle);
+    return res.status(201).json({ message: 'Restaurante cadastrado com sucesso.', newVehicle });
+    
 }
 export const getVehicleController = async(_: Request, res: Response): Promise<Response> =>{
     const vehicle = await getVehiclesService();
