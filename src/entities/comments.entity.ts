@@ -2,8 +2,13 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
+  ManyToOne,
   PrimaryGeneratedColumn,
 } from "typeorm";
+
+import User from "./users.entity";
+import Vehicle from "./vehicles.entity";
 
 @Entity("comments")
 class Comment {
@@ -11,13 +16,15 @@ class Comment {
   readonly id: string;
 
   @Column()
-  name_user: string;
-
-  @Column()
-  picture_user: string;
-
-  @Column()
   comment: string;
+
+  @ManyToOne(() => User, { eager: true })
+  @JoinColumn()
+  user: User;
+
+  @ManyToOne(() => Vehicle, { eager: true })
+  @JoinColumn()
+  vehicle: Vehicle;
 
   @CreateDateColumn()
   date: Date;
