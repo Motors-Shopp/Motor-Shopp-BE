@@ -3,26 +3,33 @@ import { IGetCarsById, ICreateVehicle } from '@interfaces/vehicles.interface'
 /* import { AppError } from "@errors/AppError" */
 import Vehicle from "@entities/vehicles.entity"
 
-export const createVehicleService = async ({  name, model, localization, year, plate, kilometers, price }: ICreateVehicle): Promise<Vehicle> =>{
+export const createVehicleService = async ({  title, year, kilometers, price, description, typeOfVehicle, img, fristImg  }: any): Promise<any> =>{
     const vehiclesRepository = AppDataSource.getRepository(Vehicle);
+    const vehicles = await vehiclesRepository.find();
 
-    const vehicleAlreadyExists = await vehiclesRepository.findOneBy({plate: plate});
+    console.log(vehicles)
+
+    // const vehicleAlreadyExists = await vehiclesRepository.findOneBy({plate: plate});
     
-    if(vehicleAlreadyExists)throw new Error//AppError(400, "Vehicle already exists.");
+    // if(vehicleAlreadyExists)throw new Error//AppError(400, "Vehicle already exists.");
 
     const newVehicle = vehiclesRepository.create({
-        name,
-        model,
-        localization,
+        title,
         year,
         kilometers,
-        price
+        price,
+        description,
+        typeOfVehicle,
+        img,
+        fristImg
     });
 
     await vehiclesRepository.save(newVehicle);
 
     return newVehicle;
 }
+
+
 
 export const getVehiclesService = async (): Promise<Vehicle[]> => {
     const vehicleRepository = AppDataSource.getRepository(Vehicle)
@@ -31,11 +38,11 @@ export const getVehiclesService = async (): Promise<Vehicle[]> => {
   }
 
 
-export const getVehicleByIdService = async ({id}:IGetCarsById): Promise<Vehicle> => {
-  const vehicleRepository = AppDataSource.getRepository(Vehicle)
-  const vehicle = await vehicleRepository.findOneBy({id: id});
+// export const getVehicleByIdService = async ({id}:IGetCarsById): Promise<Vehicle> => {
+//   const vehicleRepository = AppDataSource.getRepository(Vehicle)
+//   const vehicle = await vehicleRepository.findOneBy({id: id});
 
-  if (!vehicle)throw new Error//AppError(404, 'Vehicle not found.')
+//   if (!vehicle)throw new Error//AppError(404, 'Vehicle not found.')
 
-  return vehicle
-}
+//   return vehicle
+// }

@@ -7,34 +7,28 @@ class Vehicle {
     readonly id: string
 
     @Column()
-    name: string
+    title: string
 
     @Column()
-    model: string
+    year: string
 
     @Column()
-    localization: string
+    kilometers: string
 
     @Column()
-    year: number
+    price: string
 
     @Column()
     description: string
 
     @Column()
-    type: string
+    typeOfVehicle: string
 
     @Column()
     img: string
 
     @Column()
-    galery: string
-
-    @Column()
-    kilometers: number
-
-    @Column()
-    price: number
+    fristImg: string
 
     @CreateDateColumn({ name: 'created_at' })
     createdAt: Date
