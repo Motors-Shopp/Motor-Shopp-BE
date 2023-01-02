@@ -1,45 +1,58 @@
-import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm'
-import { v4 as uuid } from 'uuid'
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from "typeorm";
+import { v4 as uuid } from "uuid";
+import User from "./users.entity";
 
-@Entity('vehicles')
+@Entity("vehicles")
 class Vehicle {
-    @PrimaryGeneratedColumn('uuid')
-    readonly id: string
+  @PrimaryGeneratedColumn("uuid")
+  readonly id: string;
 
-    @Column()
-    title: string
+  @Column()
+  title: string;
 
-    @Column()
-    year: string
+  @Column()
+  year: string;
 
-    @Column()
-    kilometers: string
+  @Column()
+  kilometers: string;
 
-    @Column()
-    price: string
+  @Column()
+  price: string;
 
-    @Column()
-    description: string
+  @Column()
+  description: string;
 
-    @Column()
-    typeOfVehicle: string
+  @Column()
+  typeOfVehicle: string;
 
-    @Column()
-    img: string
+  @Column()
+  img: string;
 
-    @Column()
-    fristImg: string
+  @Column()
+  fristImg: string;
 
-    @CreateDateColumn({ name: 'created_at' })
-    createdAt: Date
+  @CreateDateColumn({ name: "created_at" })
+  createdAt: Date;
 
-    @UpdateDateColumn({ name: 'updated_at' })
-    updatedAt: Date
+  @UpdateDateColumn({ name: "updated_at" })
+  updatedAt: Date;
 
-    constructor() {
-        if (!this.id) {
-            this.id = uuid()
-        }
+  @ManyToOne(() => User, { eager: true })
+  @JoinColumn()
+  seller: User;
+
+  constructor() {
+    if (!this.id) {
+      this.id = uuid();
     }
+  }
 }
-export default Vehicle
+export default Vehicle;
