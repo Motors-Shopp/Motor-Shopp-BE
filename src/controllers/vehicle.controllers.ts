@@ -11,9 +11,9 @@ export const createVehicleController = async (req: Request, res: Response): Prom
     const data = req.body;
     const { userID } = req.user;
 
-    const newVehicle = await createVehicleService({ userID, data});
+    const newVehicle = await createVehicleService(userID, data);
     
-    return res.status(201).json({ message: 'Restaurante cadastrado com sucesso.', newVehicle });
+    return res.status(201).json({ message: 'Restaurante cadastrado com sucesso.'});
     
 }
 export const getVehicleController = async(_: Request, res: Response): Promise<Response> =>{

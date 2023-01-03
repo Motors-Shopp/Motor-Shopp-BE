@@ -1,29 +1,26 @@
 import AppDataSource from '../data-source'
 import { IGetCarsById, ICreateVehicle } from '@interfaces/vehicles.interface'
-/* import { AppError } from "@errors/AppError" */
 import Vehicle from "@entities/vehicles.entity"
 import User from '@entities/users.entity'
+import { AppError } from '@errors/appError'
 
 export const createVehicleService = async (userID: string, data: ICreateVehicle): Promise<Vehicle> =>{
     const vehiclesRepository = AppDataSource.getRepository(Vehicle);
     const userRepository = AppDataSource.getRepository(User);
     const user = await userRepository.findOneBy({ id: userID });
-    const { title, year, kilometers, price, description, typeOfVehicle, img, fristImg} = data
-  
-    // const vehicleAlreadyExists = await vehiclesRepository.findOneBy({plate: plate});
-    
-    // if(vehicleAlreadyExists)throw new Error//AppError(400, "Vehicle already exists.");
+    const { title,year,kilometers,price,description,typeOfVehicle,img,fristImg } = data;
 
-    const newVehicle = vehiclesRepository.create({
-        title,
-        year,
-        kilometers,
-        price,
-        description,
-        typeOfVehicle,
-        img,
-        fristImg
-    });
+    const newVehicle = new Vehicle();
+    newVehicle.title = title;
+    newVehicle.year = year;
+    newVehicle.kilometers = kilometers;
+    newVehicle.price = price;
+    newVehicle.description = description;
+    newVehicle.typeOfVehicle = typeOfVehicle;
+    newVehicle.img = img;
+    newVehicle.fristImg = fristImg;
+
+    vehiclesRepository.create(newVehicle);
     user!.vehicles.push(newVehicle)
     await vehiclesRepository.save(newVehicle);
 
