@@ -1,14 +1,13 @@
+import { Exclude } from "class-transformer";
 import {
   Column,
   Entity,
   JoinColumn,
-  JoinTable,
   OneToOne,
   PrimaryGeneratedColumn,
 } from "typeorm";
 import { v4 as uuid } from "uuid";
 import Address from "./address.entity";
-import Vehicle from "./vehicles.entity";
 
 @Entity("users")
 class User {
@@ -18,17 +17,17 @@ class User {
   @Column()
   name: string;
 
-  @Column()
+  @Column({ unique: true })
   email: string;
 
-  @Column()
+  @Column({ unique: true })
   cpf: string;
 
   @Column()
   cellphone: string;
 
-  @Column()
-  birthdate: Date;
+  @Column({ type: "date" })
+  birthdate: string;
 
   @Column()
   bio: string;
@@ -39,15 +38,19 @@ class User {
   @Column()
   is_client: boolean;
 
+  @Column({ nullable: true, default: true })
+  is_active: boolean;
+
   @Column()
+  @Exclude()
   password: string;
 
-  @OneToOne(() => Address, { eager: true })
+  @OneToOne(() => Address, { eager: true, nullable: true })
   @JoinColumn()
   address: Address;
 
-  @JoinTable()
-  vehicles: Vehicle[];
+  // @JoinTable()
+  // vehicles: Vehicle[];
 
   constructor() {
     if (!this.id) {
