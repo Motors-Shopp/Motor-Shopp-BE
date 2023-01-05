@@ -3,11 +3,14 @@ import {
   Column,
   Entity,
   JoinColumn,
+  JoinTable,
+  ManyToOne,
   OneToOne,
   PrimaryGeneratedColumn,
 } from "typeorm";
 import { v4 as uuid } from "uuid";
 import Address from "./address.entity";
+import Vehicle from "./vehicles.entity";
 
 @Entity("users")
 class User {
@@ -49,8 +52,12 @@ class User {
   @JoinColumn()
   address: Address;
 
-  // @JoinTable()
-  // vehicles: Vehicle[];
+  @ManyToOne(() => Vehicle, {
+    eager: true,
+    nullable: true,
+  })
+  @JoinTable()
+  vehicles: Vehicle[];
 
   constructor() {
     if (!this.id) {
