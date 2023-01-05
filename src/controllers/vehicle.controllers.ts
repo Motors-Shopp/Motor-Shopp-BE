@@ -6,9 +6,9 @@ import { ICreateVehicle, IUpdateVehicle } from '@interfaces/vehicles.interface';
 
 export const createVehicleController = async (req: Request, res: Response): Promise<Response> =>{
   const data = req.body;
-  const { userID } = req.user;
+  const { id } = req.user;
 
-  const newVehicle = await createVehicleService(userID, data);
+  const newVehicle = await createVehicleService(id, data);
     
   return res.status(201).json({ message: 'Anúncio criado com sucesso.'}); 
 }
@@ -26,7 +26,7 @@ export const getVehicleByIDController = async (req: Request, res: Response): Pro
 
 export const updateVehicleController = async (req: Request, res: Response): Promise<Response> =>{
   const { id } = req.params;
-  const { userID } = req.user;
+  const userID = req.user.id;
   const isAdm = req.user.isAdm;
   const {title, description, year, kilometers, price, typeOfVehicle, img, fristImg}: IUpdateVehicle = req.body;
   await updateVehicleService(id, userID, isAdm, {title, description, year, kilometers, price, typeOfVehicle, img, fristImg});
