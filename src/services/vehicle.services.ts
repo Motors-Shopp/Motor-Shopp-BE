@@ -8,6 +8,7 @@ export const createVehicleService = async (userID: string, data: ICreateVehicle)
     const vehiclesRepository = AppDataSource.getRepository(Vehicle);
     const userRepository = AppDataSource.getRepository(User);
     const user = await userRepository.findOneBy({ id: userID });
+    if(!user)throw new AppError(404, "User not found.");
     const { title,year,kilometers,price,description,typeOfVehicle,img,fristImg } = data;
 
     const newVehicle = new Vehicle();
@@ -19,10 +20,10 @@ export const createVehicleService = async (userID: string, data: ICreateVehicle)
     newVehicle.typeOfVehicle = typeOfVehicle;
     newVehicle.img = img;
     newVehicle.fristImg = fristImg;
+    newVehicle.seller = user;
 
-    vehiclesRepository.create(newVehicle);
-    user!.vehicles.push(newVehicle)
-    await vehiclesRepository.save(newVehicle);
+    const response = vehiclesRepository.create(newVehicle);
+    await vehiclesRepository.save(response);
 
     return newVehicle;
 }

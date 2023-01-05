@@ -1,3 +1,4 @@
+import User from "@entities/users.entity";
 
 export interface ICreateVehicle {
     title: string;
@@ -8,6 +9,7 @@ export interface ICreateVehicle {
     typeOfVehicle: string;
     img: string;
     fristImg: string;
+    seller: User;
 }
 
 export interface IUpdateVehicle {
