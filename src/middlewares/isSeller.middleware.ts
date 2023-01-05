@@ -12,10 +12,12 @@ export const ensureSeller = async (
   const { isAdm } = req.user;
   const userID = req.user.id;
 
-  const vehicleRepository = AppDataSource.getRepository(Vehicle)
+  const vehicleRepository = AppDataSource.getRepository(Vehicle);
   const vehicle = await vehicleRepository.findOneBy({id: id});
 
-  if (!isAdm || vehicle?.seller.id !== userID)throw new AppError(401, "Autenticação inválida");
+  if (!vehicle)throw new AppError(404, 'Vehicle not found.');
+
+  if (!isAdm || vehicle?.seller.id !== userID)throw new AppError(401, 'Autenticação inválida');
   
   next();
 };
