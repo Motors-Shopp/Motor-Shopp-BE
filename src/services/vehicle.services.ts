@@ -4,10 +4,10 @@ import Vehicle from "@entities/vehicles.entity"
 import User from '@entities/users.entity'
 import { AppError } from '@errors/appError'
 
-export const createVehicleService = async (userID: string, data: ICreateVehicle): Promise<Vehicle> =>{
+export const createVehicleService = async (id: string, data: ICreateVehicle): Promise<Vehicle> =>{
     const vehiclesRepository = AppDataSource.getRepository(Vehicle);
     const userRepository = AppDataSource.getRepository(User);
-    const user = await userRepository.findOneBy({ id: userID });
+    const user = await userRepository.findOneBy({ id: id });
     if(!user)throw new AppError(404, "User not found.");
     const { title,year,kilometers,price,description,typeOfVehicle,img,fristImg } = data;
 
