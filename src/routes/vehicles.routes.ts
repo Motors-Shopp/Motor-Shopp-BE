@@ -1,10 +1,12 @@
-import { createVehicleController, deleteVehicleController, getVehicleByIDController, getVehicleController } from '@controllers/vehicle.controllers';
+import { createVehicleController, deleteVehicleController, getVehicleByIDController, getVehicleController, updateVehicleController } from '@controllers/vehicle.controllers';
+import { ensureAuthMiddleware } from '@middlewares/auth.middleware';
+import { ensureSeller } from '@middlewares/isSeller.middleware';
 import { Router } from 'express';
 
 export const vehiclesRouter = Router();
 
 vehiclesRouter.get("", getVehicleController) 
 vehiclesRouter.get("/:id", getVehicleByIDController)
-vehiclesRouter.post("", createVehicleController);
-vehiclesRouter.delete("/:id", deleteVehicleController);
-vehiclesRouter.patch("/:id", updateVehicleController);
+vehiclesRouter.post("", ensureAuthMiddleware, createVehicleController);
+vehiclesRouter.delete("/:id", ensureAuthMiddleware, ensureSeller, deleteVehicleController);
+vehiclesRouter.patch("/:id", ensureAuthMiddleware, ensureSeller, updateVehicleController);
