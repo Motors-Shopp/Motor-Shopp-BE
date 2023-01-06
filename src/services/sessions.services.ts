@@ -8,6 +8,7 @@ import { IUserLogin } from "@interfaces/user.interface";
 import AppDataSource from "src/data-source";
 
 export const newSessionService = async ({ email, password }: IUserLogin) => {
+
   const users = AppDataSource.getRepository(User);
 
   const user = await users.findOne({ where: { email: email } });
