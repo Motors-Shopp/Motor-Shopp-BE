@@ -7,7 +7,6 @@ export const ensureAuthMiddleware = async (
     _: Response,
     next: NextFunction
 ) => {
-    
     let token = req.headers.authorization;
 
     if (!token) {

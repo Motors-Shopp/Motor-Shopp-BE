@@ -44,56 +44,39 @@ export const createVehicleService = async (
 };
 
 export const getVehiclesService = async (): Promise<Vehicle[]> => {
+    const vehicleRepository = AppDataSource.getRepository(Vehicle)
+    const vehicles = await vehicleRepository.find();
+    return vehicles
+  }
+
+
+export const getVehicleByIdService = async ({id}:IGetCarsById): Promise<Vehicle> => {
+   const vehicleRepository = AppDataSource.getRepository(Vehicle)
+   const vehicle = await vehicleRepository.findOneBy({id: id});
+
+   if (!vehicle)throw new AppError(404, 'Vehicle not found.')
+
+   return vehicle
+}
+
+export const updateVehicleService = async (id: string, {title, description, year, kilometers, price, typeOfVehicle, img, fristImg}: IUpdateVehicle): Promise<void> => {
   const vehicleRepository = AppDataSource.getRepository(Vehicle);
-  const vehicles = await vehicleRepository.find();
-  return vehicles;
-};
+  const vehicle = await vehicleRepository.findOneBy({id: id});
 
-export const getVehicleByIdService = async ({
-  id,
-}: IGetCarsById): Promise<Vehicle> => {
-  const vehicleRepository = AppDataSource.getRepository(Vehicle);
-  const vehicle = await vehicleRepository.findOneBy({ id: id });
+  if (!vehicle)throw new AppError(404, 'Vehicle not found.');
 
-  if (!vehicle) throw new AppError(404, "Vehicle not found.");
 
-  return vehicle;
-};
+  vehicle.title = title || vehicle.title;
+  vehicle.description = description || vehicle.description;
+  vehicle.description = year || vehicle.year;
+  vehicle.kilometers = kilometers || vehicle.kilometers;
+  vehicle.price = price || vehicle.price;
+  vehicle.typeOfVehicle = typeOfVehicle || vehicle.typeOfVehicle;
+  vehicle.img = img || vehicle.img;
+  vehicle.fristImg = fristImg || vehicle.fristImg;
 
-export const updateVehicleService = async (
-  id: string,
-  userID: string,
-  isAdm: boolean,
-  {
-    title,
-    description,
-    year,
-    kilometers,
-    price,
-    typeOfVehicle,
-    img,
-    fristImg,
-  }: IUpdateVehicle
-): Promise<void> => {
-  const vehicleRepository = AppDataSource.getRepository(Vehicle);
-  const vehicle = await vehicleRepository.findOneBy({ id: id });
+  await vehicleRepository.update(id,vehicle);
 
-  if (!vehicle) throw new AppError(404, "Vehicle not found.");
-
-  if (vehicle.seller.id !== userID && !isAdm)
-    throw new AppError(401, "Autenticação inválida.");
-
-  const updatedVehicle = new Vehicle();
-  updatedVehicle.title = title || updatedVehicle.title;
-  updatedVehicle.description = description || updatedVehicle.description;
-  updatedVehicle.description = year || updatedVehicle.year;
-  updatedVehicle.kilometers = kilometers || updatedVehicle.kilometers;
-  updatedVehicle.price = price || updatedVehicle.price;
-  updatedVehicle.typeOfVehicle = typeOfVehicle || updatedVehicle.typeOfVehicle;
-  updatedVehicle.img = img || updatedVehicle.img;
-  updatedVehicle.fristImg = fristImg || updatedVehicle.fristImg;
-
-  await vehicleRepository.update(id, updatedVehicle);
 };
 
 export const deleteVehicleService = async ({
@@ -104,5 +87,6 @@ export const deleteVehicleService = async ({
 
   if (!vehicle) throw new AppError(404, "Vehicle not found.");
 
-  vehicle.active = false;
+ // vehicle.active = false;
+
 };

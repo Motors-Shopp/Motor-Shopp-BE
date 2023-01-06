@@ -133,3 +133,4 @@ export const deleteUserController = async (req: Request, res: Response) => {
     }
   }
 };
+

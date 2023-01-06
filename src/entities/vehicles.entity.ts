@@ -37,7 +37,7 @@ class Vehicle {
   img: string;
 
   @Column()
-  fristImg: string;
+  fristImg?: string;
 
   @Column({ default: true })
   active: boolean;
