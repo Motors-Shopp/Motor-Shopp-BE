@@ -1,34 +1,47 @@
-import AppDataSource from '../data-source'
-import { IGetCarsById, ICreateVehicle, IUpdateVehicle } from '@interfaces/vehicles.interface'
-import Vehicle from "@entities/vehicles.entity"
-import User from '@entities/users.entity'
-import { AppError } from '@errors/appError'
+import User from "@entities/users.entity";
+import Vehicle from "@entities/vehicles.entity";
+import { AppError } from "@errors/appError";
+import {
+  ICreateVehicle,
+  IGetCarsById,
+  IUpdateVehicle,
+} from "@interfaces/vehicles.interface";
+import AppDataSource from "../data-source";
 
-export const createVehicleService = async (id: string, data: ICreateVehicle): Promise<Vehicle> =>{
-    const vehiclesRepository = AppDataSource.getRepository(Vehicle);
-    const userRepository = AppDataSource.getRepository(User);
-    const user = await userRepository.findOneBy({ id: id });
-    if(!user)throw new AppError(404, "User not found.");
-    const { title,year,kilometers,price,description,typeOfVehicle,img,fristImg } = data;
+export const createVehicleService = async (
+  userID: string,
+  data: ICreateVehicle
+): Promise<Vehicle> => {
+  const vehiclesRepository = AppDataSource.getRepository(Vehicle);
+  const userRepository = AppDataSource.getRepository(User);
+  const user = await userRepository.findOneBy({ id: userID });
+  const {
+    title,
+    year,
+    kilometers,
+    price,
+    description,
+    typeOfVehicle,
+    img,
+    fristImg,
+  } = data;
 
-    const newVehicle = new Vehicle();
-    newVehicle.title = title;
-    newVehicle.year = year;
-    newVehicle.kilometers = kilometers;
-    newVehicle.price = price;
-    newVehicle.description = description;
-    newVehicle.typeOfVehicle = typeOfVehicle;
-    newVehicle.img = img;
-    newVehicle.fristImg = fristImg;
-    newVehicle.seller = user;
+  const newVehicle = new Vehicle();
+  newVehicle.title = title;
+  newVehicle.year = year;
+  newVehicle.kilometers = kilometers;
+  newVehicle.price = price;
+  newVehicle.description = description;
+  newVehicle.typeOfVehicle = typeOfVehicle;
+  newVehicle.img = img;
+  newVehicle.fristImg = fristImg;
 
-    const response = vehiclesRepository.create(newVehicle);
-    await vehiclesRepository.save(response);
+  vehiclesRepository.create(newVehicle);
+  user!.vehicles.push(newVehicle);
+  await vehiclesRepository.save(newVehicle);
 
-    return newVehicle;
-}
-
-
+  return newVehicle;
+};
 
 export const getVehiclesService = async (): Promise<Vehicle[]> => {
     const vehicleRepository = AppDataSource.getRepository(Vehicle)
@@ -52,6 +65,7 @@ export const updateVehicleService = async (id: string, {title, description, year
 
   if (!vehicle)throw new AppError(404, 'Vehicle not found.');
 
+
   vehicle.title = title || vehicle.title;
   vehicle.description = description || vehicle.description;
   vehicle.description = year || vehicle.year;
@@ -65,15 +79,14 @@ export const updateVehicleService = async (id: string, {title, description, year
 
 };
 
+export const deleteVehicleService = async ({
+  id,
+}: IGetCarsById): Promise<void> => {
+  const vehicleRepository = AppDataSource.getRepository(Vehicle);
+  const vehicle = await vehicleRepository.findOneBy({ id: id });
 
-export const deleteVehicleService = async ({id}:IGetCarsById): Promise<void> => {
-  const vehicleRepository = AppDataSource.getRepository(Vehicle)
-  const vehicle = await vehicleRepository.findOneBy({id: id});
-
-  if (!vehicle)throw new AppError(404, 'Vehicle not found.');
+  if (!vehicle) throw new AppError(404, "Vehicle not found.");
 
  // vehicle.active = false;
 
 };
-
-
