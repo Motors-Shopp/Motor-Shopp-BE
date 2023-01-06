@@ -1,81 +1,88 @@
-import AppDataSource from '../data-source'
-import Comment from "@entities/comments.entity"
-import { date } from 'yup';
+import AppDataSource from "../data-source";
+import Comment from "@entities/comments.entity";
+import { date } from "yup";
 import { v4 as uuid } from "uuid";
 
-
 export const getCommentsService = async (): Promise<any> => {
-  const commentRepository = AppDataSource.getRepository(Comment)
+  const commentRepository = AppDataSource.getRepository(Comment);
   const comment = await commentRepository.find();
-  return comment
-}
+  return comment;
+};
 
-export const getCommentsServiceById = async ({id}:any): Promise<any> => {
-  const commentRepository = AppDataSource.getRepository(Comment)
+export const getCommentsServiceById = async ({ id }: any): Promise<any> => {
+  const commentRepository = AppDataSource.getRepository(Comment);
 
-  const  comment = await commentRepository.findOne({
-    where:{
-        id
-    }
-  })
+  const comment = await commentRepository.findOne({
+    where: {
+      id,
+    },
+  });
 
-  if(!comment){
-    throw new Error ("user not found")
+  if (!comment) {
+    throw new Error("user not found");
   }
-  
-  return comment
-}
 
-export const postCommentsService = async ({comment, user, vehicle}: any): Promise<any> => {
-  const commentRepository = AppDataSource.getRepository(Comment)
+  return comment;
+};
+
+export const postCommentsService = async ({
+  comment,
+  clientId,
+  vehicleId,
+}: any): Promise<any> => {
+  const commentRepository = AppDataSource.getRepository(Comment);
   // const comments = await commentRepository.find();
 
   const newComment = commentRepository.create({
-    id:uuid(),
+    id: uuid(),
     comment,
-    user,
-    vehicle
-});
+    user: clientId,
+    vehicle: vehicleId,
+  });
 
-await commentRepository.save(newComment);
+  await commentRepository.save(newComment);
 
-  return comment
-}
+  return comment;
+};
 
-export const pacthCommentsService = async (data:any, id:string): Promise<any> => {
+export const pacthCommentsService = async (
+  data: any,
+  id: string
+): Promise<any> => {
+  const commentRepository = AppDataSource.getRepository(Comment);
 
-  const commentRepository = AppDataSource.getRepository(Comment)
+  const comment = await commentRepository.findOne({
+    where: {
+      id,
+    },
+  });
 
-  const  comment = await commentRepository.findOne({
-    where:{
-        id
-    }
-  })
-
-  if(!comment){
-    throw new Error ("user not found")
+  if (!comment) {
+    throw new Error("user not found");
   }
 
-  const updateComment = await commentRepository.save({...data,id:comment.id})
+  const updateComment = await commentRepository.save({
+    ...data,
+    id: comment.id,
+  });
 
-  return updateComment
-}
+  return updateComment;
+};
 
-export const deleteCommentsServiceById = async ({id}:any): Promise<any> => {
-  const commentRepository = AppDataSource.getRepository(Comment)
+export const deleteCommentsServiceById = async ({ id }: any): Promise<any> => {
+  const commentRepository = AppDataSource.getRepository(Comment);
 
-  const  comment = await commentRepository.findOne({
-    where:{
-        id
-    }
-  })
+  const comment = await commentRepository.findOne({
+    where: {
+      id,
+    },
+  });
 
-  if(!comment){
-    throw new Error ("user not found")
+  if (!comment) {
+    throw new Error("user not found");
   }
 
-  await commentRepository.delete(comment.id)
-  
-  return "deletado"
-}
+  await commentRepository.delete(comment.id);
 
+  return "deletado";
+};
