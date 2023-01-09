@@ -1,6 +1,8 @@
 import User from "@entities/users.entity";
+import { AppError } from "@errors/appError";
 import { IAddress } from "@interfaces/address.interface";
 import { IUserRequest, IUserUpdate } from "@interfaces/user.interface";
+import { generateJWTToken } from "@utils/generateJWTToken";
 import bcrypt from "bcryptjs";
 import AppDataSource from "../data-source";
 import { createAddressService, updateAddressService } from "./address.service";

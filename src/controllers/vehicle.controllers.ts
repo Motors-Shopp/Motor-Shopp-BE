@@ -26,10 +26,8 @@ export const getVehicleByIDController = async (req: Request, res: Response): Pro
 
 export const updateVehicleController = async (req: Request, res: Response): Promise<Response> =>{
   const { id } = req.params;
-  const userID = req.user.id; //id do user logado
-  const isAdm = req.user.isAdm;
   const {title, description, year, kilometers, price, typeOfVehicle, img, fristImg}: IUpdateVehicle = req.body;
-  await updateVehicleService(id, userID, isAdm, {title, description, year, kilometers, price, typeOfVehicle, img, fristImg});
+  await updateVehicleService(id, {title, description, year, kilometers, price, typeOfVehicle, img, fristImg});
   return res.status(200).json({ message: 'Anúncio atualizado com sucesso.'});
 }
 

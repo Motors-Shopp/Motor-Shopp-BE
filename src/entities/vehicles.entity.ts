@@ -37,10 +37,10 @@ class Vehicle {
   img: string;
 
   @Column()
-  fristImg: string;
+  fristImg?: string;
 
-  @Column()
-  active?: boolean;
+  @Column({ default: true })
+  active: boolean;
 
   @CreateDateColumn({ name: "created_at" })
   createdAt: Date;
