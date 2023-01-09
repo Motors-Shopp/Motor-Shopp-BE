@@ -58,3 +58,8 @@ export interface IUserUpdateResponse {
   address?: IAddressUpdate;
   vehicles?: Array<object>;
 }
+
+export interface IUserLogin {
+  email: string;
+  password: string;
+}
