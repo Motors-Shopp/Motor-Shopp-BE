@@ -10,6 +10,7 @@ export const AppRoutes = Router();
 AppRoutes.use("/vehicles", vehiclesRouter);
 AppRoutes.use("/users", usersRouter);
 AppRoutes.use("/comments", commentsRouter);
+AppRoutes.use("/login", sessionRouter);
 
 //recovery password route
 AppRoutes.use("/password", recoveryPassRouter);
