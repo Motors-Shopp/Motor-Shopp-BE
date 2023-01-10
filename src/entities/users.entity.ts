@@ -53,7 +53,6 @@ class User {
   address: Address;
 
   @ManyToOne(() => Vehicle, {
-    eager: true,
     nullable: true,
   })
   @JoinTable()
