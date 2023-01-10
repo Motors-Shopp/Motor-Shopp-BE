@@ -1,5 +1,4 @@
 import Address from "@entities/address.entity";
-import User from "@entities/users.entity";
 import { IAddressRequest, IAddressUpdate } from "@interfaces/address.interface";
 import AppDataSource from "../data-source";
 
@@ -38,19 +37,10 @@ export const updateAddressService = async ({
   district,
   state,
 }: IAddressUpdate) => {
-  const userRepository = AppDataSource.getRepository(User);
-  const users = await userRepository.find();
-
-  const account = users.find((user) => user.id === id);
-
-  console.log(account);
-
-  // const addId = account!.address.id;
-
   const addressRepository = AppDataSource.getRepository(Address);
   const address = await addressRepository.find();
 
-  const findAddress = address.find(() => account!.address.id === id);
+  const findAddress = address.find((add) => add.id === id);
 
   if (!findAddress) {
     // throw new Error("esta conta não possui um endereço");
