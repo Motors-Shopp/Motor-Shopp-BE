@@ -1,12 +1,12 @@
-import { Request, Response } from "express";
-import { instanceToPlain } from "class-transformer";
 import {
+  deleteCommentsServiceById,
   getCommentsService,
   getCommentsServiceById,
-  postCommentsService,
   pacthCommentsService,
-  deleteCommentsServiceById,
+  postCommentsService,
 } from "@services/comments.services";
+import { instanceToPlain } from "class-transformer";
+import { Request, Response } from "express";
 
 export const getCommentsController = async (
   _: Request,
@@ -22,6 +22,8 @@ export const getCommentsControllerByID = async (
 ): Promise<any> => {
   try {
     const id = req.params.id;
+
+    // console.log(id)
 
     const users = await getCommentsServiceById({ id });
 
