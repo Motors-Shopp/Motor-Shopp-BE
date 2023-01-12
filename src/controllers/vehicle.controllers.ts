@@ -1,6 +1,6 @@
 import {Request, Response} from 'express';
 import { instanceToPlain } from "class-transformer";
-import { getCarVehiclesService,getMotorBikeVehiclesService,createVehicleService, deleteVehicleService, getVehicleByIdService, getVehiclesService, updateVehicleService } from '@services/vehicle.services';
+import { getSellerIDVehiclesService,getCarVehiclesService,getMotorBikeVehiclesService,createVehicleService, deleteVehicleService, getVehicleByIdService, getVehiclesService, updateVehicleService } from '@services/vehicle.services';
 import { ICreateVehicle, IUpdateVehicle } from '@interfaces/vehicles.interface';
 
 
@@ -15,6 +15,13 @@ export const createVehicleController = async (req: Request, res: Response): Prom
 
 export const getVehicleController = async(_: Request, res: Response): Promise<Response> =>{
   const vehicle = await getVehiclesService();
+  return res.status(200).json(instanceToPlain(vehicle));
+}
+
+export const getVehicleSellerIDController = async(req: Request, res: Response): Promise<Response> =>{
+  const { id } = req.params;
+  
+  const vehicle = await getSellerIDVehiclesService({id});
   return res.status(200).json(instanceToPlain(vehicle));
 }
 

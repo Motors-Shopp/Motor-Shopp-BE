@@ -57,6 +57,19 @@ export const getVehiclesService = async (): Promise<Vehicle[]> => {
   return vehicles
 };
 
+export const getSellerIDVehiclesService = async (id:any): Promise<Vehicle[]> => {
+  const vehicleRepository = AppDataSource.getRepository(Vehicle);
+  const vehicles:any = await vehicleRepository.find();
+  let arr = []
+  for (let i = 0; i < vehicles.length; i++) {
+    if(vehicles[i].seller.id === id.id){
+      arr.push(vehicles[i])
+    }
+  }
+  return arr
+};
+
+
 export const getMotorBikeVehiclesService = async (): Promise<Vehicle[]> => {
   const vehicleRepository = AppDataSource.getRepository(Vehicle);
   const vehicles:any = await vehicleRepository.find();
