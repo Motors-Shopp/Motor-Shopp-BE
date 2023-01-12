@@ -54,7 +54,31 @@ export const createVehicleService = async (
 export const getVehiclesService = async (): Promise<Vehicle[]> => {
   const vehicleRepository = AppDataSource.getRepository(Vehicle);
   const vehicles = await vehicleRepository.find();
-  return vehicles;
+  return vehicles
+};
+
+export const getMotorBikeVehiclesService = async (): Promise<Vehicle[]> => {
+  const vehicleRepository = AppDataSource.getRepository(Vehicle);
+  const vehicles:any = await vehicleRepository.find();
+  let arrVeicles = []
+  for (let i = 0; i < vehicles.length; i++) {
+    if(vehicles[i].typeOfVehicle === "motorbike"){
+      arrVeicles.push(vehicles[i])
+    }
+  }
+  return arrVeicles
+};
+
+export const getCarVehiclesService = async (): Promise<Vehicle[]> => {
+  const vehicleRepository = AppDataSource.getRepository(Vehicle);
+  const vehicles:any = await vehicleRepository.find();
+  let arrVeicles = []
+  for (let i = 0; i < vehicles.length; i++) {
+    if(vehicles[i].typeOfVehicle === "car"){
+      arrVeicles.push(vehicles[i])
+    }
+  }
+  return arrVeicles
 };
 
 export const getVehicleByIdService = async ({
